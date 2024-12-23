@@ -47,10 +47,43 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: AppointmentCalendar(),
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 40, bottom: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.calendar_month,
+                        color: Color(0xFF6B4EFF), size: 28),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      '预订与 Sarah 的会议时间',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const AppointmentCalendar(),
+              const SizedBox(height: 20),
+              Text(
+                'Made by Nero Song with Flutter',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontSize: 13,
+                ),
+              ),
+            ],
           ),
         ),
       ),
