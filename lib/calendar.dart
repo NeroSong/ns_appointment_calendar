@@ -3,7 +3,24 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentCalendar extends StatefulWidget {
-  const AppointmentCalendar({super.key});
+  final String name;
+  final String title;
+  final ImageProvider avatarImg;
+  final String description;
+  final Set<DateTime> disabledDays;
+  final List<String> timeSlots;
+  final Function(DateTime date, int timeSlot, String note) onSubmit;
+
+  const AppointmentCalendar({
+    super.key,
+    required this.name,
+    required this.title,
+    required this.avatarImg,
+    required this.description,
+    required this.disabledDays,
+    required this.timeSlots,
+    required this.onSubmit,
+  });
 
   @override
   State<AppointmentCalendar> createState() => _AppointmentCalendarState();
@@ -16,25 +33,12 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
   final _noteController = TextEditingController();
   bool isMobile = false;
 
-  final Set<DateTime> _disabledDays = {
-    DateTime(2024, 12, 25),
-    DateTime(2025, 1, 1),
-  };
-
-  final List<String> _availableTimeSlots = [
-    '10:00 - 11:00',
-    '11:00 - 12:00',
-    '14:00 - 15:00',
-    '15:00 - 16:00',
-  ];
-
-  bool _isWeekend(DateTime day) {
-    return day.weekday == DateTime.saturday || day.weekday == DateTime.sunday;
-  }
-
   bool _isDisabled(DateTime day) {
-    return _isWeekend(day) ||
-        _disabledDays.contains(DateTime(day.year, day.month, day.day));
+    return widget.disabledDays.contains(DateTime(
+      day.year,
+      day.month,
+      day.day,
+    ));
   }
 
   @override
@@ -114,14 +118,14 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                     ),
                   ],
                 ),
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 32,
-                  backgroundImage: NetworkImage('https://picsum.photos/200'),
+                  backgroundImage: widget.avatarImg,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
-                'Sarah Johnson',
+                widget.name,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -130,7 +134,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Senior Product Manager',
+                widget.title,
                 style: TextStyle(
                   fontSize: 12,
                   color: theme.colorScheme.onSurface.withOpacity(0.6),
@@ -138,8 +142,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
               ),
               const SizedBox(height: 14),
               Text(
-                '10年产品经验，专注于AI与数据产品。擅长产品战略规划与团队管理。'
-                '超过30分钟的会不要拉我，谢谢。',
+                widget.description,
                 style: TextStyle(
                   fontSize: 12,
                   color: theme.colorScheme.onSurface.withOpacity(0.8),
@@ -258,7 +261,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                 runSpacing: 8,
                 alignment: WrapAlignment.start,
                 children: List.generate(
-                  (_availableTimeSlots.length / 2).ceil(),
+                  (widget.timeSlots.length / 2).ceil(),
                   (index) {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
@@ -266,7 +269,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                         Expanded(
                           child: ChoiceChip(
                             label: Text(
-                              _availableTimeSlots[index * 2],
+                              widget.timeSlots[index * 2],
                               style: TextStyle(
                                 fontSize: 11,
                                 color: _selectedTimeSlot == index * 2
@@ -293,11 +296,11 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                                 horizontal: 8, vertical: 4),
                           ),
                         ),
-                        if (index * 2 + 1 < _availableTimeSlots.length) ...[
+                        if (index * 2 + 1 < widget.timeSlots.length) ...[
                           Expanded(
                             child: ChoiceChip(
                               label: Text(
-                                _availableTimeSlots[index * 2 + 1],
+                                widget.timeSlots[index * 2 + 1],
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: _selectedTimeSlot == index * 2 + 1
@@ -382,12 +385,10 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('预约已提交！'),
-                        behavior: SnackBarBehavior.floating,
-                        backgroundColor: primary,
-                      ),
+                    widget.onSubmit(
+                      _selectedDay,
+                      _selectedTimeSlot,
+                      _noteController.text,
                     );
                   },
                   style: ElevatedButton.styleFrom(

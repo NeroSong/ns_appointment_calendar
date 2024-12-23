@@ -74,7 +74,31 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
               ),
-              const AppointmentCalendar(),
+              AppointmentCalendar(
+                name: 'Sarah Johnson',
+                title: 'Senior Product Manager',
+                avatarImg: const NetworkImage(
+                  'https://picsum.photos/200/200',
+                  scale: 1,
+                ),
+                description: '10年产品经验，专注于AI与数据产品。擅长产品战略规划与团队管理。'
+                    '超过30分钟的会不要拉我，谢谢。',
+                disabledDays: {
+                  DateTime(2024, 12, 25),
+                  DateTime(2025, 1, 1),
+                },
+                timeSlots: const [
+                  '10:00 - 11:00',
+                  '11:00 - 12:00',
+                  '14:00 - 15:00',
+                  '15:00 - 16:00',
+                ],
+                onSubmit: (date, timeSlot, note) {
+                  print('预约时间: ${date.toString()}');
+                  print('时间段: $timeSlot');
+                  print('备注: $note');
+                },
+              ),
               const SizedBox(height: 20),
               Text(
                 'Made by Nero Song with Flutter',
