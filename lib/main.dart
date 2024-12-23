@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ns_appointment_calendar/calendar.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,19 +12,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('zh', 'CN'),
+      ],
+      locale: const Locale('zh', 'CN'),
       title: 'NS Appointment Calendar',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF6B4EFF),
           primary: const Color(0xFF6B4EFF),
-          secondary: const Color(0xFF00D1FF),
-          surface: Colors.white,
-          background: const Color(0xFFF8F9FE),
+          surface: const Color(0xFFFAFAFC),
+          surfaceTint: Colors.transparent,
         ),
         useMaterial3: true,
         cardTheme: CardTheme(
-          elevation: 2,
-          shadowColor: Colors.black.withOpacity(0.1),
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          color: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -35,9 +47,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Scaffold(
-        backgroundColor: const Color(0xFFF8F9FE),
-        body: const Center(
+      home: const Scaffold(
+        body: Center(
           child: SingleChildScrollView(
             child: AppointmentCalendar(),
           ),
