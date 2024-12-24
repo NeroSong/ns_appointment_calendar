@@ -1,11 +1,13 @@
 # NS Appointment Calendar
 
-A beautiful and modern appointment calendar widget built with Flutter. Perfect for scheduling meetings, consultations, or any time-based appointments.
+A beautiful and modern appointment calendar widget Demo built with Flutter. Perfect for scheduling meetings, consultations, or any time-based appointments.
 
 ![Light Mode](demo-pic/shot1.png)
 ![Dark Mode](demo-pic/shot2.png)
 
-Live Demo: [https://ns-appointment-calendar.zeabur.app/](https://ns-appointment-calendar.zeabur.app/)
+Live Demo(This project on Web): [https://ns-appointment-calendar.zeabur.app/](https://ns-appointment-calendar.zeabur.app/)
+
+English | [简体中文](README_zh.md)
 
 ## Features
 
@@ -20,16 +22,13 @@ Live Demo: [https://ns-appointment-calendar.zeabur.app/](https://ns-appointment-
 
 ## Getting Started
 
-### Dependencies
-
-Add this to your package's `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  ns_appointment_calendar: ^1.0.0
-```
+> ⚠️ Note: This package is not yet published to pub.dev. For now, you can copy the `calendar.dart` file from this repository and use it directly in your project.
 
 ### Usage
+
+1. Copy the `calendar.dart` file from this repository to your project.
+
+2. Import and use the widget:
 
 ```dart
 AppointmentCalendar(
@@ -55,17 +54,13 @@ AppointmentCalendar(
 
 ## Customization
 
-The widget is highly customizable with theme support. You can customize:
+The widget is highly customizable with theme support. You can customize by parameters or just edit the source code:
 
 - Colors and styles
 - Time slots
 - Disabled dates
 - Text strings
 - Layout and spacing
-
-## Contributing
-
-Contributions are welcome! Feel free to submit issues and pull requests.
 
 ## License
 
