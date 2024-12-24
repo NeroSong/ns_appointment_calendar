@@ -58,9 +58,9 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
             constraints: const BoxConstraints(maxWidth: 820),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: const Color(0xFF6B4EFF).withOpacity(0.15),
+                color: theme.colorScheme.outline,
                 width: 1,
               ),
             ),
@@ -100,7 +100,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
     return SizedBox(
       width: isMobile ? double.infinity : 200,
       child: Card(
-        color: const Color.fromARGB(255, 248, 247, 255),
+        color: theme.colorScheme.surface,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -112,9 +112,9 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withOpacity(0.2),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
+                      color: theme.colorScheme.outline,
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -158,7 +158,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
 
   Widget _buildCalendarCard(ThemeData theme, Color primary) {
     return Card(
-      color: const Color.fromARGB(255, 248, 247, 255),
+      color: theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: Column(
@@ -193,21 +193,24 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
               calendarStyle: CalendarStyle(
                 outsideDaysVisible: false,
                 weekendTextStyle: TextStyle(
-                  color: theme.colorScheme.onSurface.withOpacity(0.4),
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
                 ),
                 disabledTextStyle: TextStyle(
                   color: theme.colorScheme.onSurface.withOpacity(0.3),
                 ),
                 selectedDecoration: BoxDecoration(
-                  color: primary,
+                  color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
                 todayDecoration: BoxDecoration(
-                  color: theme.colorScheme.secondary.withOpacity(0.2),
+                  border: Border.all(
+                    color: theme.colorScheme.primary,
+                    width: 1,
+                  ),
                   shape: BoxShape.circle,
                 ),
                 todayTextStyle: TextStyle(
-                  color: theme.colorScheme.secondary,
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
                 cellMargin: const EdgeInsets.all(2),
@@ -240,7 +243,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
     return SizedBox(
       width: isMobile ? double.infinity : 220,
       child: Card(
-        color: const Color.fromARGB(255, 248, 247, 255),
+        color: theme.colorScheme.surface,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -248,13 +251,20 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              Text(
-                DateFormat('yyyy年MM月dd日').format(_selectedDay),
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    DateFormat.yMMMMd(
+                            Localizations.localeOf(context).languageCode)
+                        .format(_selectedDay),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Wrap(
@@ -278,7 +288,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                               ),
                             ),
                             selected: _selectedTimeSlot == index * 2,
-                            selectedColor: primary,
+                            selectedColor: theme.colorScheme.primary,
                             backgroundColor: theme.colorScheme.surface,
                             showCheckmark: false,
                             materialTapTargetSize:
@@ -294,6 +304,10 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                             },
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
+                            side: BorderSide(
+                              color: theme.colorScheme.outline,
+                              width: 1,
+                            ),
                           ),
                         ),
                         if (index * 2 + 1 < widget.timeSlots.length) ...[
@@ -309,7 +323,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                                 ),
                               ),
                               selected: _selectedTimeSlot == index * 2 + 1,
-                              selectedColor: primary,
+                              selectedColor: theme.colorScheme.primary,
                               backgroundColor: theme.colorScheme.surface,
                               showCheckmark: false,
                               materialTapTargetSize:
@@ -323,6 +337,12 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                                   });
                                 }
                               },
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              side: BorderSide(
+                                color: theme.colorScheme.outline,
+                                width: 1,
+                              ),
                             ),
                           ),
                         ],
@@ -344,40 +364,36 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
               TextField(
                 controller: _noteController,
                 maxLines: 3,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: theme.colorScheme.onSurface.withOpacity(0.9),
-                  height: 1.5,
-                ),
+                style: const TextStyle(fontSize: 12),
                 decoration: InputDecoration(
-                  labelStyle: TextStyle(
-                    fontSize: 12,
+                  hintText: '请简要说明会议内容...',
+                  hintStyle: TextStyle(
                     color: theme.colorScheme.onSurface.withOpacity(0.5),
                   ),
+                  filled: true,
+                  fillColor: theme.colorScheme.surface,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
-                      color: theme.colorScheme.outline.withOpacity(0.2),
+                      color: theme.colorScheme.outline,
+                      width: 1,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
-                      color: theme.colorScheme.outline.withOpacity(0.2),
+                      color: theme.colorScheme.outline,
+                      width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: primary),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.primary,
+                      width: 1.5,
+                    ),
                   ),
                   contentPadding: const EdgeInsets.all(12),
-                  hintText: '请简要说明会议内容...',
-                  hintStyle: TextStyle(
-                    fontSize: 12,
-                    color: theme.colorScheme.onSurface.withOpacity(0.4),
-                  ),
-                  filled: true,
-                  fillColor: theme.colorScheme.surface,
                 ),
               ),
               const SizedBox(height: 12),

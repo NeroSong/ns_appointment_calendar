@@ -18,24 +18,31 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
+        Locale('en', 'US'),
         Locale('zh', 'CN'),
       ],
-      locale: const Locale('zh', 'CN'),
       title: 'NS Appointment Calendar',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6B4EFF),
-          primary: const Color(0xFF6B4EFF),
-          surface: const Color(0xFFFAFAFC),
+          seedColor: const Color(0xFF111111),
+          primary: const Color(0xFF111111),
+          surface: const Color(0xFFFAFAFA),
           surfaceTint: Colors.transparent,
+          background: const Color(0xFFFFFFFF),
+          onBackground: const Color(0xFF111111),
+          onSurface: const Color(0xFF111111),
+          secondary: const Color(0xFF666666),
+          outline: const Color(0xFFE5E5E5),
         ),
         useMaterial3: true,
         cardTheme: CardTheme(
           elevation: 0,
-          surfaceTintColor: Colors.transparent,
-          color: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(
+              color: Color(0xFFE5E5E5),
+              width: 1,
+            ),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -94,9 +101,7 @@ class MyApp extends StatelessWidget {
                   '15:00 - 16:00',
                 ],
                 onSubmit: (date, timeSlot, note) {
-                  print('预约时间: ${date.toString()}');
-                  print('时间段: $timeSlot');
-                  print('备注: $note');
+                  print('Date: $date, Time Slot: $timeSlot, Note: $note');
                 },
               ),
               const SizedBox(height: 20),
