@@ -2,16 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
+/// A customizable appointment calendar widget that allows users to select dates,
+/// time slots, and add notes for appointments.
+///
+/// This widget provides a clean and modern interface for scheduling appointments,
+/// with support for:
+/// * Date selection with a calendar view
+/// * Customizable time slots
+/// * Disabled dates (weekends and specific dates)
+/// * Appointment notes
+/// * Responsive layout
+///
+/// Example:
+/// ```dart
+/// AppointmentCalendar(
+///   name: 'John Doe',
+///   title: 'Software Engineer',
+///   avatarImg: NetworkImage('https://example.com/avatar.jpg'),
+///   description: 'Full-stack developer with 5 years of experience',
+///   disabledDays: {DateTime(2024, 12, 25)},
+///   timeSlots: const ['09:00 - 10:00', '10:00 - 11:00'],
+///   onSubmit: (date, slot, note) {
+///     print('Appointment scheduled for $date at slot $slot');
+///   },
+/// )
+/// ```
 class AppointmentCalendar extends StatefulWidget {
+  /// The name of the person or resource being scheduled
   final String name;
+
+  /// The title or role of the person
   final String title;
+
+  /// The avatar image to display
   final ImageProvider avatarImg;
+
+  /// A brief description or introduction
   final String description;
+
+  /// Set of dates that should be disabled in the calendar
   final Set<DateTime> disabledDays;
+
+  /// List of available time slots
   final List<String> timeSlots;
+
+  /// Callback function when an appointment is submitted
+  ///
+  /// Parameters:
+  /// * [date] - The selected date
+  /// * [timeSlot] - Index of the selected time slot
+  /// * [note] - Optional note added by the user
   final Function(DateTime date, int timeSlot, String note) onSubmit;
 
-  const AppointmentCalendar({
+  AppointmentCalendar({
     super.key,
     required this.name,
     required this.title,
@@ -20,25 +63,40 @@ class AppointmentCalendar extends StatefulWidget {
     required this.disabledDays,
     required this.timeSlots,
     required this.onSubmit,
-  });
+  })  : assert(timeSlots.isNotEmpty, 'Time slots cannot be empty'),
+        assert(timeSlots.length <= 24, 'Maximum 24 time slots allowed');
 
   @override
   State<AppointmentCalendar> createState() => _AppointmentCalendarState();
 }
 
 class _AppointmentCalendarState extends State<AppointmentCalendar> {
+  static const double _kBorderRadius = 8.0;
+  static const double _kMobileBreakpoint = 600.0;
+
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   int _selectedTimeSlot = 0;
   final _noteController = TextEditingController();
   bool isMobile = false;
 
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  /// Checks if a given date should be disabled
+  ///
+  /// A date is disabled if it's either:
+  /// * A weekend (Saturday or Sunday)
+  /// * Listed in the disabledDays set
   bool _isDisabled(DateTime day) {
-    // 检查是否是周末
+    // Check if it's a weekend
     final isWeekend =
         day.weekday == DateTime.saturday || day.weekday == DateTime.sunday;
 
-    // 检查是否在禁用日期列表中
+    // Check if it's in the disabled dates list
     final isDisabledDate = widget.disabledDays.contains(DateTime(
       day.year,
       day.month,
@@ -51,10 +109,10 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    isMobile = size.width < _kMobileBreakpoint;
     final primary = theme.colorScheme.primary;
     final onPrimary = theme.colorScheme.onPrimary;
-    final screenWidth = MediaQuery.of(context).size.width;
-    isMobile = screenWidth < 800;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -64,7 +122,7 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 820),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(_kBorderRadius),
               border: Border.all(
                 color: theme.colorScheme.outline,
                 width: 1,
