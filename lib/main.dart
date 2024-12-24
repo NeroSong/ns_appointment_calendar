@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('zh', 'CN');
+  Locale _locale = const Locale('en', 'US');
   bool _isDarkMode = false;
 
   void _changeLanguage(String? languageCode) {
@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         cardTheme: CardTheme(
           elevation: 0,
+          color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: const BorderSide(
@@ -87,8 +88,6 @@ class _MyAppState extends State<MyApp> {
           primary: Colors.white,
           surface: const Color(0xFF1A1A1A),
           surfaceTint: Colors.transparent,
-          background: const Color(0xFF111111),
-          onBackground: Colors.white,
           onSurface: Colors.white,
           secondary: const Color(0xFF999999),
           outline: const Color(0xFF333333),
@@ -96,6 +95,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         cardTheme: CardTheme(
           elevation: 0,
+          color: const Color(0xFF2c2c2c),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: const BorderSide(

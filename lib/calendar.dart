@@ -64,9 +64,6 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 820),
             decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.black
-                  : Colors.white,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: theme.colorScheme.outline,
