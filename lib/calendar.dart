@@ -34,11 +34,18 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
   bool isMobile = false;
 
   bool _isDisabled(DateTime day) {
-    return widget.disabledDays.contains(DateTime(
+    // 检查是否是周末
+    final isWeekend =
+        day.weekday == DateTime.saturday || day.weekday == DateTime.sunday;
+
+    // 检查是否在禁用日期列表中
+    final isDisabledDate = widget.disabledDays.contains(DateTime(
       day.year,
       day.month,
       day.day,
     ));
+
+    return isWeekend || isDisabledDate;
   }
 
   @override
@@ -57,7 +64,9 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 820),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.white,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: theme.colorScheme.outline,
@@ -198,6 +207,10 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                 disabledTextStyle: TextStyle(
                   color: theme.colorScheme.onSurface.withOpacity(0.3),
                 ),
+                selectedTextStyle: TextStyle(
+                  color: theme.colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
                 selectedDecoration: BoxDecoration(
                   color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
@@ -222,9 +235,8 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
               ),
               daysOfWeekHeight: 32,
               rowHeight: 42,
-              availableCalendarFormats: const {CalendarFormat.month: '月'},
               daysOfWeekVisible: true,
-              locale: 'zh_CN',
+              locale: Localizations.localeOf(context).languageCode,
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   _selectedDay = selectedDay;
@@ -353,7 +365,9 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
               ),
               const SizedBox(height: 20),
               Text(
-                '预约说明',
+                Localizations.localeOf(context).languageCode == 'zh'
+                    ? '预约说明'
+                    : 'Appointment Note',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -366,7 +380,9 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                 maxLines: 3,
                 style: const TextStyle(fontSize: 12),
                 decoration: InputDecoration(
-                  hintText: '请简要说明会议内容...',
+                  hintText: Localizations.localeOf(context).languageCode == 'zh'
+                      ? '请简要说明会议内容...'
+                      : 'Please briefly describe the meeting content...',
                   hintStyle: TextStyle(
                     color: theme.colorScheme.onSurface.withOpacity(0.5),
                   ),
@@ -417,9 +433,11 @@ class _AppointmentCalendarState extends State<AppointmentCalendar> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    '提交预约',
-                    style: TextStyle(fontSize: 12),
+                  child: Text(
+                    Localizations.localeOf(context).languageCode == 'zh'
+                        ? '提交预约'
+                        : 'Submit',
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ),
               ),
